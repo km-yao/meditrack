@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
 
-class Med extends StatelessWidget {
-  const Med({super.key});
+class Med {
+  String nome;
+  int compresse;
+  String dosaggio;
 
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
+  Med ({
+    required this.nome,
+    required this.compresse,
+    required this.dosaggio
+  });
 }
