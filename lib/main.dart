@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meditrack/models/api_db.dart';
+import 'package:meditrack/models/med.dart';
 import 'package:meditrack/pages/homepage.dart';
 
 
 void main() {
+  ApiDb().insertMed(Med(id: 1, nome: "Bik", compresse: 30, dosaggio: "20mg"));
   runApp(ProviderScope(child: const MyApp()));
 }
 

@@ -18,12 +18,12 @@ class ApiDb {
       dbName,
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE meds (" 
+          "CREATE TABLE meds(" 
             "id INTEGER primary key,"
             "nome TEXT,"
             "compresse INTEGER,"
-            "dosaggio TEXT,"
-          ")",
+            "dosaggio TEXT"
+          ");",
         );
       },
       version: 1
@@ -33,7 +33,7 @@ class ApiDb {
   Future<List<Med>> getAllMeds() async {
     final db = await database;
 
-    final List<Map<String, Object?>> medsMap = db.query('meds');
+    final List<Map<String, Object?>> medsMap = await db.query('meds');
 
     return [
       for (final {'id': id as int, 'nome': nome as String, 'compresse': compresse as int, 'dosaggio': dosaggio as String} in medsMap)
