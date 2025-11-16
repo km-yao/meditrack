@@ -20,7 +20,7 @@ class _HomepageState extends ConsumerState<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    medResponse = ref.watch(medProvider);
+    final medResponse = ref.watch(medProvider);
 
     return Scaffold(
       appBar: AppBar(
