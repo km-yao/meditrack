@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meditrack/models/med.dart';
 import 'package:meditrack/models/med_response.dart';
+import 'package:meditrack/pages/edit_med.dart';
 import 'package:meditrack/providers/med_provider.dart';
 
 class Homepage extends ConsumerStatefulWidget {
@@ -34,12 +35,12 @@ class _HomepageState extends ConsumerState<Homepage> {
         ),
         centerTitle: true,
         backgroundColor: Colors.green,
-        actions: [IconButton(onPressed: null, icon: Icon(Icons.add))],
+        actions: [IconButton(onPressed: null, icon: Icon(Icons.settings))],
       ),
       body: medResponse.isLoading == true
           ? Center(child: CircularProgressIndicator())
           : medResponse.errorMsg.isNotEmpty
-          ? Center(child: Text(medResponse.errorMsg))
+          ? Center(child: Text(medResponse.errorMsg, textAlign: TextAlign.center, style: TextStyle(fontSize: 36),))
           : Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -60,6 +61,7 @@ class _HomepageState extends ConsumerState<Homepage> {
                 ),
               ),
             ),
+      floatingActionButton: IconButton(onPressed: () =>  _navigateToPage(context, EditMed()), icon: Icon(Icons.add)),
     );
   }
 }
