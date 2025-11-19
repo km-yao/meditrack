@@ -17,7 +17,6 @@ class EditMed extends ConsumerStatefulWidget {
 class _AddMedState extends ConsumerState<EditMed> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   late Med _currentMed;
 
   Future<void> insertMed() async {
@@ -49,7 +48,9 @@ class _AddMedState extends ConsumerState<EditMed> {
   }
 
   void _cleanForm() {
-    _currentMed = Med(id: 0, nome: "", compresse: 0, dosaggio: "");
+    setState(() {
+      _currentMed = Med(id: 0, nome: "", compresse: 0, dosaggio: "");
+    });
   }
 
   @override
@@ -87,6 +88,11 @@ class _AddMedState extends ConsumerState<EditMed> {
                       onSaved: (value) {
                         _currentMed.nome = value!;
                       },
+                      onChanged: (value) {
+                        setState(() {
+                          _currentMed.nome = value;
+                        });
+                      },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return "Inserisci il nome";
@@ -106,6 +112,11 @@ class _AddMedState extends ConsumerState<EditMed> {
                       onSaved: (value) {
                         _currentMed.dosaggio = value!;
                       },
+                      onChanged: (value) {
+                        setState(() {
+                          _currentMed.dosaggio = value;
+                        });
+                      },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return "Inserisci il dosaggio";
@@ -119,15 +130,21 @@ class _AddMedState extends ConsumerState<EditMed> {
                     TextFormField(
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
+                        hintText: "20",
                         labelText: "Numero compresse",
                         border: OutlineInputBorder() 
                       ),
                       initialValue: _currentMed.compresse.toString(),
-                        onSaved: (value) {
+                      onSaved: (value) {
                         _currentMed.compresse = int.tryParse(value ?? '') ?? 0;
                       },
+                      onChanged: (value) {
+                        setState(() {
+                          _currentMed.compresse = int.tryParse(value) ?? 0;
+                        });
+                      },
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
+                        if (value == null || value.trim().isEmpty || int.parse(value) == 0) {
                           return "Inserisci il numero di compresse";
                         }
                         return null;
@@ -137,9 +154,17 @@ class _AddMedState extends ConsumerState<EditMed> {
                     const SizedBox(height: 50),
 
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(onPressed: () => insertMed(), child: Text("Salva")),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              insertMed();
+                            }
+                          }, 
+                          child: Text("Salva")
+                        ),
                         const SizedBox(width: 50),
                         ElevatedButton(onPressed: _cleanForm, child: Text("Pulisci")),
                       ],

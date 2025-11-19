@@ -53,14 +53,13 @@ class _HomepageState extends ConsumerState<Homepage> {
                   itemCount: medResponse.list.length,
                   itemBuilder: (context, index) {
                     Med currentMed = medResponse.list[index];
-                    MedCard(med: currentMed);
+                    return MedCard(med: currentMed);
                   }
-
                 ),
               ),
             ),
       // Raggiungere la pagina per inserire i med
-      floatingActionButton: IconButton(onPressed: () =>  _navigateToPage(context, EditMed()), icon: Icon(Icons.add)),
+      floatingActionButton: IconButton.filled(onPressed: () =>  _navigateToPage(context, EditMed()), icon: Icon(Icons.add,), iconSize: 36,),
     );
   }
 }
