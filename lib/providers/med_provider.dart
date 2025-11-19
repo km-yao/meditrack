@@ -36,6 +36,18 @@ class MedNotifier extends StateNotifier<MedResponse> {
     }
   }
 
+  Future <void> deleteAll() async {
+    try {
+      state = state.copyWith(isLoadingArg: true);
+      await service.deleteAll();
+      state = state.copyWith(listArg: []);
+    } catch (e) {
+      state = state.copyWith(errorMsgArg: "Errore cancellazione meds: $e\n");
+    } finally {
+      state = state.copyWith(isLoadingArg: false);
+    }
+  }
+
 }
 
 final medProvider = StateNotifierProvider<MedNotifier, MedResponse> (

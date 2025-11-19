@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meditrack/models/med.dart';
+import 'package:meditrack/models/med_card.dart';
 import 'package:meditrack/models/med_response.dart';
 import 'package:meditrack/pages/edit_med.dart';
+import 'package:meditrack/pages/settings.dart';
 import 'package:meditrack/providers/med_provider.dart';
 
 class Homepage extends ConsumerStatefulWidget {
@@ -35,7 +37,7 @@ class _HomepageState extends ConsumerState<Homepage> {
         ),
         centerTitle: true,
         backgroundColor: Colors.green,
-        actions: [IconButton(onPressed: null, icon: Icon(Icons.settings))],
+        actions: [IconButton(onPressed: () => _navigateToPage(context, Settings()), icon: Icon(Icons.settings))],
       ),
       body: medResponse.isLoading == true
           ? Center(child: CircularProgressIndicator())
@@ -51,16 +53,13 @@ class _HomepageState extends ConsumerState<Homepage> {
                   itemCount: medResponse.list.length,
                   itemBuilder: (context, index) {
                     Med currentMed = medResponse.list[index];
-                    return Card(
-                      margin: EdgeInsets.all(16),
-                      elevation: 12,
-                      child: Text(currentMed.nome),
-                    );
+                    MedCard(med: currentMed);
                   }
 
                 ),
               ),
             ),
+      // Raggiungere la pagina per inserire i med
       floatingActionButton: IconButton(onPressed: () =>  _navigateToPage(context, EditMed()), icon: Icon(Icons.add)),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,17 +20,19 @@ class _AddMedState extends ConsumerState<EditMed> {
 
   late Med _currentMed;
 
-  Future<void> insertMed(Med med) async {
+  Future<void> insertMed() async {
     try {
-      await ref.read(medProvider.notifier).insert(med);
+      await ref.read(medProvider.notifier).insert(_currentMed);
       MedResponse result = ref.read(medProvider);
 
       if (result.errorMsg.isNotEmpty) {        
         throw Exception(result.errorMsg);
       }
 
+      setState(() {});
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Med inserimento"))
+        SnackBar(content: Text("Med inserito"))
       );
 
     } catch (e) {
@@ -98,9 +102,9 @@ class _AddMedState extends ConsumerState<EditMed> {
                         labelText: "Dosaggio",
                         border: OutlineInputBorder() 
                       ),
-                      initialValue: _currentMed.nome,
+                      initialValue: _currentMed.dosaggio,
                       onSaved: (value) {
-                        _currentMed.nome = value!;
+                        _currentMed.dosaggio = value!;
                       },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -119,8 +123,8 @@ class _AddMedState extends ConsumerState<EditMed> {
                         border: OutlineInputBorder() 
                       ),
                       initialValue: _currentMed.compresse.toString(),
-                      onSaved: (value) {
-                        _currentMed.nome = value!;
+                        onSaved: (value) {
+                        _currentMed.compresse = int.tryParse(value ?? '') ?? 0;
                       },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -133,8 +137,9 @@ class _AddMedState extends ConsumerState<EditMed> {
                     const SizedBox(height: 50),
 
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ElevatedButton(onPressed: () => insertMed(_currentMed), child: Text("Salva")),
+                        ElevatedButton(onPressed: () => insertMed(), child: Text("Salva")),
                         const SizedBox(width: 50),
                         ElevatedButton(onPressed: _cleanForm, child: Text("Pulisci")),
                       ],

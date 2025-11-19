@@ -5,7 +5,6 @@ class MedService {
 
   MedService();
 
-
   Future<List<Med>> getAll() async {
     try {
       List<Med> list = [];
@@ -26,7 +25,14 @@ class MedService {
     } catch (e) {
       throw Exception("MEDSERVICE.insert : $e");
     }
+  }
 
+  Future<void> deleteAll() async {
+    try {
+      await ApiDb().deleteAllMeds();
+    } catch (e) {
+      throw Exception("MEDSERVICE.deleteALL : $e");
+    }
   }
 
 }

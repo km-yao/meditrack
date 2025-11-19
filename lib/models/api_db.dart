@@ -59,4 +59,20 @@ class ApiDb {
     );
   }
 
+  Future<void> deleteMed(int id) async {
+    final db = await database;
+
+    await db.delete(
+      'meds',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> deleteAllMeds() async {
+    final db = await database;
+
+    await db.delete('meds');
+  }
+
 }
