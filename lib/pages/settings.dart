@@ -12,7 +12,7 @@ class Settings extends ConsumerStatefulWidget {
 class _SettingsState extends ConsumerState<Settings> {
   // TODO:
   // cambiare colori
-  // cancellare ogni med
+
 
   void _pulisciDB() {
     showDialog(context: context, builder: (context) {

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meditrack/models/disp_response.dart';
+import 'package:meditrack/models/disponibilita.dart';
 import 'package:meditrack/models/med.dart';
 import 'package:meditrack/models/med_card.dart';
 import 'package:meditrack/models/med_response.dart';
 import 'package:meditrack/pages/edit_med.dart';
 import 'package:meditrack/pages/settings.dart';
+import 'package:meditrack/providers/disp_provider.dart';
 import 'package:meditrack/providers/med_provider.dart';
 
 class Homepage extends ConsumerStatefulWidget {
@@ -15,7 +18,9 @@ class Homepage extends ConsumerStatefulWidget {
 }
 
 class _HomepageState extends ConsumerState<Homepage> {
+
   late MedResponse medResponse;
+  late DispResponse dispResponse;
 
   void _navigateToPage(BuildContext context, Widget page) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
@@ -24,6 +29,7 @@ class _HomepageState extends ConsumerState<Homepage> {
   @override
   Widget build(BuildContext context) {
     final medResponse = ref.watch(medProvider);
+    final dispResponse = ref.watch(dispProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -73,7 +79,8 @@ class _HomepageState extends ConsumerState<Homepage> {
                   itemCount: medResponse.list.length,
                   itemBuilder: (context, index) {
                     Med currentMed = medResponse.list[index];
-                    return MedCard(med: currentMed);
+                    Disponibilita currentDisp = dispResponse.list[index];
+                    return MedCard(med: currentMed, disponibilita: currentDisp,);
                   },
                 ),
               ),

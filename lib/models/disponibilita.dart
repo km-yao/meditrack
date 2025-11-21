@@ -1,14 +1,22 @@
+import 'package:meditrack/models/med.dart';
+
 class Disponibilita {
 
-  final int id;
-  final DateTime prelievo;
-  DateTime scandenza; 
+  int id;
+  DateTime prelievo;
+  DateTime scadenza; 
 
-  Disponibilita({required this.id, required this.prelievo, required this.scandenza});
+  Disponibilita({required this.id, required this.prelievo, required this.scadenza});
+  
+  Disponibilita.med({required Med med}) :
+    id = med.id,
+    prelievo = DateTime.now(),
+    scadenza = DateTime.now().add(Duration(days: med.compresse));
+  
 
   factory Disponibilita.fromMap(Map<String, dynamic> map) {
-    final dynamic raw = map['prelievo'];
-    late DateTime date;
+    // final dynamic raw = map['prelievo'];
+    // late DateTime date;
 
     // if (raw == null) {
     //   date = DateTime.fromMillisecondsSinceEpoch(0);
@@ -30,17 +38,14 @@ class Disponibilita {
       // prelievo: date,
       // scandenza: date,
       prelievo: DateTime.parse(map['prelievo'] as String),
-      scandenza: DateTime.parse(map['scadenza'] as String),
+      scadenza: DateTime.parse(map['scadenza'] as String),
     );
   }
 
   Map<String, dynamic> toMap() => {
     'id': id,
-    'attributo': prelievo,
-    'scadenza': scandenza,
+    'attributo': prelievo.toString(),
+    'scadenza': scadenza.toString(),
   };
 
-  void setScadenza(int compresse) {
-    scandenza = prelievo.add(Duration(days: compresse)) ;
-  }
 }

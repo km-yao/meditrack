@@ -51,5 +51,5 @@ class MedNotifier extends StateNotifier<MedResponse> {
 }
 
 final medProvider = StateNotifierProvider<MedNotifier, MedResponse> (
-  (ref) => MedNotifier(ref.read(MedServiceProvider))
+  (ref) => MedNotifier(ref.read(medServiceProvider))
 );

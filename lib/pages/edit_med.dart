@@ -44,12 +44,6 @@ class _AddMedState extends ConsumerState<EditMed> {
     _currentMed = Med(id: 0, nome: "", compresse: 0, dosaggio: "");
   }
 
-  void _cleanForm() {
-    setState(() {
-      _currentMed = Med(id: 0, nome: "", compresse: 0, dosaggio: "");
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
