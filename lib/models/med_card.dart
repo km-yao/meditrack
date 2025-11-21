@@ -9,22 +9,25 @@ class MedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 8,
+      color: Theme.of(context).colorScheme.inversePrimary,
+      elevation: 3,
       margin: EdgeInsets.all(6),
       child: Padding(
-        padding: EdgeInsetsGeometry.all(16),
+        padding: EdgeInsetsGeometry.all(12),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
-              spacing: 8,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 4,
               children: [
-                Text(med.nome, style: TextStyle(fontSize: 24)),
+                Text(med.nome, style: TextStyle(fontSize: 26)),
                 Text("${med.compresse} compresse"),
-                Text(med.dosaggio),
+                Text(med.dosaggio, textAlign: TextAlign.start),
               ],
             ),
             Expanded(child: const SizedBox()),
-            IconButton(onPressed: null, icon: Icon(Icons.more_vert))
+            IconButton(onPressed: null, icon: Icon(Icons.more_vert), color: Theme.of(context).colorScheme.inversePrimary,)
           ],
         ),
       ),

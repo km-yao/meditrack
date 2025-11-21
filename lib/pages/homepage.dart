@@ -26,6 +26,7 @@ class _HomepageState extends ConsumerState<Homepage> {
     final medResponse = ref.watch(medProvider);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(
           "MediTrack",
@@ -36,30 +37,53 @@ class _HomepageState extends ConsumerState<Homepage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
-        actions: [IconButton(onPressed: () => _navigateToPage(context, Settings()), icon: Icon(Icons.settings))],
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        actions: [
+          IconButton(
+            onPressed: () => _navigateToPage(context, Settings()),
+            icon: Icon(Icons.settings, color: Theme.of(context).colorScheme.onPrimary,),
+          ),
+        ],
       ),
       body: medResponse.isLoading == true
           ? Center(child: CircularProgressIndicator())
           : medResponse.errorMsg.isNotEmpty
-          ? Center(child: Text(medResponse.errorMsg, textAlign: TextAlign.center, style: TextStyle(fontSize: 36),))
+          ? Center(
+              child: Text(
+                medResponse.errorMsg,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 36),
+              ),
+            )
+          : medResponse.list.isEmpty
+          ? Center(
+              child: Text(
+                "Inserisci un nuovo Med",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 48),
+              ),
+            )
           : Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 40,
-                ), 
+                  vertical: 18,
+                  horizontal: 12,
+                ),
                 child: ListView.builder(
                   itemCount: medResponse.list.length,
                   itemBuilder: (context, index) {
                     Med currentMed = medResponse.list[index];
                     return MedCard(med: currentMed);
-                  }
+                  },
                 ),
               ),
             ),
       // Raggiungere la pagina per inserire i med
-      floatingActionButton: IconButton.filled(onPressed: () =>  _navigateToPage(context, EditMed()), icon: Icon(Icons.add,), iconSize: 36,),
+      floatingActionButton: IconButton.filled(
+        onPressed: () => _navigateToPage(context, EditMed()),
+        icon: Icon(Icons.add),
+        iconSize: 36,
+      ),
     );
   }
 }

@@ -45,13 +45,16 @@ class _SettingsState extends ConsumerState<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Impostazioni",
+          "MediTrack",
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: BackButton(color: Theme.of(context).colorScheme.onPrimary),
       ),
       body: Padding(
         padding: EdgeInsetsGeometry.all(12),
@@ -62,6 +65,10 @@ class _SettingsState extends ConsumerState<Settings> {
               child: Column(
                 spacing: 8,
                 children: [
+
+                  Text("Impostazioni", style: TextStyle(fontSize: 28)),
+
+                  const SizedBox(height: 30),
 
                   Row(
                     children: [

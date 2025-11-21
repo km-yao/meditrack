@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meditrack/models/med.dart';
 import 'package:meditrack/models/med_response.dart';
@@ -66,11 +63,12 @@ class _AddMedState extends ConsumerState<EditMed> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        leading: BackButton(color: Theme.of(context).colorScheme.onPrimary),
       ),
       body: 
       Padding(
-        padding: EdgeInsetsGeometry.all(12), 
+        padding: EdgeInsetsGeometry.all(16), 
         child: Center(
           child: Expanded (
             child: Container (
@@ -79,6 +77,10 @@ class _AddMedState extends ConsumerState<EditMed> {
                 key: _formKey, 
                 child: Column(
                   children: [
+                    Text("Inserisci un nuovo med", style: TextStyle(fontSize: 28)),
+
+                    const SizedBox(height: 30),
+
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: "Nome",
@@ -156,17 +158,22 @@ class _AddMedState extends ConsumerState<EditMed> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
+                        ElevatedButton.icon(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
                               insertMed();
                             }
-                          }, 
-                          child: Text("Salva")
+                          },
+                          label: Text("Salva"),
+                          icon: Icon(Icons.check) 
                         ),
                         const SizedBox(width: 50),
-                        ElevatedButton(onPressed: _cleanForm, child: Text("Pulisci")),
+                        ElevatedButton.icon(
+                          onPressed: () { Navigator.pop(context); },
+                          label: Text("Annulla"),
+                          icon: Icon(Icons.close),
+                        )
                       ],
                     )
                   ],
