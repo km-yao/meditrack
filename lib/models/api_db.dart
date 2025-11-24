@@ -10,7 +10,7 @@ class ApiDb {
     _initDatabase();
   }
   
-  final String dbName = "meditrackdb.db";
+  final String dbName = "meditrack.db";
   late final dynamic database;
 
   void _initDatabase() async {
@@ -22,12 +22,9 @@ class ApiDb {
             "id INTEGER primary key,"
             "nome TEXT,"
             "compresse INTEGER,"
-            "dosaggio TEXT"
-          ");"
-          "CREATE TABLE disponibilita("
-            "id INTEGER primary key,"
+            "dosaggio TEXT,"
             "prelievo TEXT,"
-            "scandenza TEXT"
+            "scadenza TEXT"
           ");"
         );
       },
