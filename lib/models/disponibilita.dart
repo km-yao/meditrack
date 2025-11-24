@@ -44,8 +44,19 @@ class Disponibilita {
 
   Map<String, dynamic> toMap() => {
     'id': id,
-    'prelievo': prelievo.toString(),
+    'attributo': prelievo.toString(),
     'scadenza': scadenza.toString(),
   };
+  
+  String toString() {
+    return 'Disponibilita{id: $id, prelievo: $prelievo, scadenza: $scadenza}';
+  }
 
+  String getPrelievoFormatted() {
+    return "${prelievo.day}/${prelievo.month}/${prelievo.year}";
+  }
+
+  String getScadenzaFormatted() {
+    return "${scadenza.day}/${scadenza.month}/${scadenza.year}";
+  }
 }

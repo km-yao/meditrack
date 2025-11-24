@@ -18,6 +18,9 @@ class _AddMedState extends ConsumerState<EditMed> {
 
   Future<void> insertMed() async {
     try {
+      // Aggoirna la data di scadenza in base alla data di prelievo e al numero di compresse
+      _currentMed.scadenza = _currentMed.prelievo.add(Duration(days: _currentMed.compresse));
+
       await ref.read(medProvider.notifier).insert(_currentMed);
       MedResponse result = ref.read(medProvider);
 
@@ -41,7 +44,7 @@ class _AddMedState extends ConsumerState<EditMed> {
   @override
   void initState() {
     super.initState();
-    _currentMed = Med(id: 0, nome: "", compresse: 0, dosaggio: "");
+    _currentMed = Med(id: 0, nome: "", compresse: 0, dosaggio: "", prelievo: DateTime.now(), scadenza: DateTime.now());
   }
 
   @override
@@ -70,11 +73,11 @@ class _AddMedState extends ConsumerState<EditMed> {
               child: Form(
                 key: _formKey, 
                 child: Column(
+                  spacing: 30,
                   children: [
                     Text("Inserisci un nuovo med", style: TextStyle(fontSize: 28)),
 
-                    const SizedBox(height: 30),
-
+                    // NOME
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: "Nome",
@@ -97,8 +100,7 @@ class _AddMedState extends ConsumerState<EditMed> {
                       },
                     ),
 
-                    const SizedBox(height: 30),
-
+                    // DOSAGGIO
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: "Dosaggio",
@@ -121,8 +123,7 @@ class _AddMedState extends ConsumerState<EditMed> {
                       },
                     ),
 
-                    const SizedBox(height: 30),
-
+                    // NUMERO COMPRESSE
                     TextFormField(
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
@@ -147,8 +148,46 @@ class _AddMedState extends ConsumerState<EditMed> {
                       },
                     ),
 
-                    const SizedBox(height: 50),
+                    // DATA PRELIEVO
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Data prelievo",
+                        border: OutlineInputBorder() 
+                      ),
+                      
+                      controller: TextEditingController(text: _currentMed.prelievo.toLocal().toString().split(' ')[0]),
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context, 
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101)
+                        );
+                        if (pickedDate != null) {
+                          setState(() {
+                            _currentMed.prelievo = pickedDate;
+                          });
+                        }
+                      },
+                      onSaved: (value) {
+                        _currentMed.prelievo = value as DateTime;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _currentMed.prelievo = value as DateTime;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return "Inserisci la data di prelievo";
+                        }
+                        return null;
+                      }
+                    ),
 
+                    const SizedBox(height: 20),
+
+                    // BOTTONI SALVA / ANNULLA
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
