@@ -16,9 +16,12 @@ class ApiDb {
   void _initDatabase() async {
     database = openDatabase(
       dbName,
-      onCreate: (db, version) {
-        return db.execute(
-          "CREATE TABLE meds(" 
+      version: 1,
+      onCreate: (db, version) async {
+        // create tables if they don't exist
+        await db.execute("CREATE TABLE IF NOT EXISTS disponibilita(id INTEGER primary key, prelievo TEXT, scadenza TEXT);");
+        await db.execute(
+          "CREATE TABLE IF NOT EXISTS meds(" 
             "id INTEGER primary key,"
             "nome TEXT,"
             "compresse INTEGER,"
@@ -28,7 +31,6 @@ class ApiDb {
           ");"
         );
       },
-      version: 1
     );
   }
 
@@ -46,9 +48,20 @@ class ApiDb {
   Future<Med> getMed(int id) async {
     final db = await database;
 
-    final Med med = db.query('meds', columns: ['id'], where: 'id = $id');
+    final List<Map<String, Object?>> maps = await db.query('meds', where: 'id = ?', whereArgs: [id], limit: 1);
 
-    return med;
+    if (maps.isEmpty) {
+      throw Exception('Med not found: $id');
+    }
+
+    final row = maps.first;
+
+    return Med(
+      id: row['id'] as int,
+      nome: row['nome'] as String,
+      compresse: row['compresse'] as int,
+      dosaggio: row['dosaggio'] as String,
+    );
   }
 
   Future<void> insertMed(Med med) async {
@@ -91,9 +104,19 @@ class ApiDb {
   Future<Disponibilita> getDisponibilita(int id) async {
     final db = await database;
 
-    final Disponibilita disponibilita = db.query('disponibilita', columns: ['id'], where: 'id = $id');
+    final List<Map<String, Object?>> maps = await db.query('disponibilita', where: 'id = ?', whereArgs: [id], limit: 1);
 
-    return disponibilita;
+    if (maps.isEmpty) {
+      throw Exception('Disponibilita not found: $id');
+    }
+
+    final row = maps.first;
+
+    return Disponibilita(
+      id: row['id'] as int,
+      prelievo: DateTime.parse(row['prelievo'] as String),
+      scadenza: DateTime.parse(row['scadenza'] as String),
+    );
   }
 
   Future<void> insertDisponibilita(Disponibilita disponibilita) async {

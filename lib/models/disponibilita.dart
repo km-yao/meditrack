@@ -44,7 +44,7 @@ class Disponibilita {
 
   Map<String, dynamic> toMap() => {
     'id': id,
-    'attributo': prelievo.toString(),
+    'prelievo': prelievo.toString(),
     'scadenza': scadenza.toString(),
   };
 
