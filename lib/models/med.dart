@@ -58,4 +58,8 @@ class Med {
   String getScadenzaFormatted() {
     return "${scadenza.day}/${scadenza.month}/${scadenza.year}";
   }
+
+  void updateScadenza() {
+    scadenza = prelievo.add(Duration(days: compresse));
+  }
 }

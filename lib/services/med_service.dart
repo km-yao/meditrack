@@ -35,4 +35,12 @@ class MedService {
     }
   }
 
+  Future<void> update(Med med) async {
+    try {
+      await ApiDb().updateMed(med);
+    } catch (e) {
+      throw Exception("MEDSERVICE.update : $e");
+    }
+  }
+
 }

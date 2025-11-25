@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meditrack/models/api_db.dart';
-import 'package:meditrack/models/disponibilita.dart';
 import 'package:meditrack/models/med.dart';
 import 'package:meditrack/pages/homepage.dart';
 
@@ -26,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MediTrack',
       debugShowCheckedModeBanner: false,
-      
+
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       ),

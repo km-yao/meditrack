@@ -48,6 +48,19 @@ class MedNotifier extends StateNotifier<MedResponse> {
     }
   }
 
+  Future<void> update(Med med) async {
+    try {
+      state = state.copyWith(isLoadingArg: true);
+      await service.update(med);
+      List<Med> updatedList = state.list.map((m) => m.id == med.id ? med : m).toList();
+      state = state.copyWith(listArg: updatedList);
+    } catch (e) {
+      state = state.copyWith(errorMsgArg: "Errore aggiornamento med: $e\n");
+    } finally {
+      state = state.copyWith(isLoadingArg: false);
+    }
+  }
+
 }
 
 final medProvider = StateNotifierProvider<MedNotifier, MedResponse> (

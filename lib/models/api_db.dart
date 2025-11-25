@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meditrack/models/disponibilita.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:meditrack/models/med.dart';
 
@@ -110,69 +109,15 @@ class ApiDb {
     await db.delete('meds');
   }
 
-  Future<List<Disponibilita>> getAllDisponibilita() async {
-    final db = await database;
 
-    final List<Map<String, Object?>> disponibilitaMap = await db.query('disponibilita');
-
-    return [
-      for (final {'id': id as int, 'prelievo': prelievo as String, 'scadenza': scadenza as String} in disponibilitaMap)
-      Disponibilita(id: id, prelievo: DateTime.parse(prelievo), scadenza: DateTime.parse(scadenza))
-    ];
-  }
-
-  Future<Disponibilita> getDisponibilita(int id) async {
-    final db = await database;
-
-    final List<Map<String, Object?>> maps = await db.query('disponibilita', where: 'id = ?', whereArgs: [id], limit: 1);
-
-    if (maps.isEmpty) {
-      throw Exception('Disponibilita not found: $id');
-    }
-
-    final row = maps.first;
-
-    return Disponibilita(
-      id: row['id'] as int,
-      prelievo: DateTime.parse(row['prelievo'] as String),
-      scadenza: DateTime.parse(row['scadenza'] as String),
-    );
-  }
-
-  Future<void> insertDisponibilita(Disponibilita disponibilita) async {
-    final db = await database;
-
-    await db.insert(
-      'disponibilita',
-      disponibilita.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<void> deleteDisponibilita(int id) async {
-    final db = await database;
-
-    await db.delete(
-      'disponibilita',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
-
-  Future<void> deleteAllDisponibilita() async {
-    final db = await database;
-
-    await db.delete('disponibilita');
-  }
-
-  Future<void> updateDisponibilita(Disponibilita disponibilita) async {
+  Future<void> updateMed(Med med) async {
     final db = await database;
 
     await db.update(
-      'disponibilita',
-      disponibilita.toMap(),
+      'meds',
+      med.toMap(),
       where: 'id = ?',
-      whereArgs: [disponibilita.id],
+      whereArgs: [med.id],
     );
   }
 }

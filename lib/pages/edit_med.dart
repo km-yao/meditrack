@@ -33,6 +33,8 @@ class _AddMedState extends ConsumerState<EditMed> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Med inserito"))
       );
+       
+      Navigator.pop(context);
 
     } catch (e) {
       throw Exception("EDIT_MED_PAGE : Errore salvataggio : $e");

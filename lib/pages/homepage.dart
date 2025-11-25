@@ -22,6 +22,51 @@ class _HomepageState extends ConsumerState<Homepage> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 
+  void _refreshMeds() {
+    ref.read(medProvider.notifier).getAll();
+  }
+
+  void updateMed(Med med) async {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text("Aggiorna"),
+        content: Text("Aggiorna la data relativa a ${med.nome}?"),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("Annulla")),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+
+              try {
+
+                med.prelievo = DateTime.now();
+                med.scadenza = med.prelievo.add(Duration(days: med.compresse));
+                
+                // Aggiorna il database
+                await ref.read(medProvider.notifier).update(med);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Database pulito"))
+                );
+
+              } catch (e) {
+                throw Exception("SETTINGS_PAGE : Errore pulizia DB : $e");
+              }
+
+            }, 
+            child: Text("Conferma")
+          ),
+        ],
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshMeds();
+  }
+
   @override
   Widget build(BuildContext context) {
     final medResponse = ref.watch(medProvider);
@@ -74,7 +119,7 @@ class _HomepageState extends ConsumerState<Homepage> {
                   itemCount: medResponse.list.length,
                   itemBuilder: (context, index) {
                     Med currentMed = medResponse.list[index];
-                    return MedCard(med: currentMed);
+                    return MedCard(med: currentMed, onLongPress: updateMed,);
                   },
                 ),
               ),
