@@ -23,12 +23,12 @@ class MedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return InkWell(
-      onLongPress: () => onLongPress,
-      child: Card(
-        color: getCardColor(context),
-        elevation: 3,
-        margin: EdgeInsets.all(6),
+    return Card(
+      color: getCardColor(context),
+      elevation: 3,
+      margin: EdgeInsets.all(6),
+      child: InkWell(
+        onLongPress: () => onLongPress(med),
         child: Padding(
           padding: EdgeInsetsGeometry.all(12),
           child: Row(

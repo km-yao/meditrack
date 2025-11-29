@@ -33,8 +33,6 @@ class _AddMedState extends ConsumerState<EditMed> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Med inserito"))
       );
-       
-      Navigator.pop(context);
 
     } catch (e) {
       throw Exception("EDIT_MED_PAGE : Errore salvataggio : $e");
@@ -52,6 +50,7 @@ class _AddMedState extends ConsumerState<EditMed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           "Add Med",
@@ -172,11 +171,11 @@ class _AddMedState extends ConsumerState<EditMed> {
                         }
                       },
                       onSaved: (value) {
-                        _currentMed.prelievo = value as DateTime;
+                        _currentMed.prelievo =  DateTime.parse(value as String);
                       },
                       onChanged: (value) {
                         setState(() {
-                          _currentMed.prelievo = value as DateTime;
+                          _currentMed.prelievo = DateTime.parse(value);
                         });
                       },
                       validator: (value) {

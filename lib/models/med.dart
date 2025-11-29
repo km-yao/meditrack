@@ -26,7 +26,6 @@ class Med {
 
   Map<String, Object?> toMap() {
     return {
-      'id': id,
       'nome': nome,
       'compresse': compresse,
       'dosaggio': dosaggio,

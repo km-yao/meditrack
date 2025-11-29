@@ -22,10 +22,6 @@ class _HomepageState extends ConsumerState<Homepage> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 
-  void _refreshMeds() {
-    ref.read(medProvider.notifier).getAll();
-  }
-
   void updateMed(Med med) async {
     showDialog(context: context, builder: (context) {
       return AlertDialog(
@@ -46,11 +42,11 @@ class _HomepageState extends ConsumerState<Homepage> {
                 await ref.read(medProvider.notifier).update(med);
 
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Database pulito"))
+                  SnackBar(content: Text("Med aggiornato"))
                 );
 
               } catch (e) {
-                throw Exception("SETTINGS_PAGE : Errore pulizia DB : $e");
+                throw Exception("HOMEPAGE : Errore aggiornamento med : $e");
               }
 
             }, 
@@ -64,7 +60,6 @@ class _HomepageState extends ConsumerState<Homepage> {
   @override
   void initState() {
     super.initState();
-    _refreshMeds();
   }
 
   @override
