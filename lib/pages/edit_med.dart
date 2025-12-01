@@ -68,152 +68,154 @@ class _AddMedState extends ConsumerState<EditMed> {
       Padding(
         padding: EdgeInsetsGeometry.all(16), 
         child: Center(
-          child: Expanded (
-            child: Container (
-              decoration: BoxDecoration(),
-              child: Form(
-                key: _formKey, 
-                child: Column(
-                  spacing: 30,
-                  children: [
-                    Text("Inserisci un nuovo med", style: TextStyle(fontSize: 28)),
-
-                    // NOME
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Nome",
-                        border: OutlineInputBorder() 
-                      ),
-                      initialValue: _currentMed.nome,
-                      onSaved: (value) {
-                        _currentMed.nome = value!;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _currentMed.nome = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return "Inserisci il nome";
-                        }
-                        return null;
-                      },
+          child: Form(
+            key: _formKey, 
+            child: Column(
+              spacing: 30,
+              children: [
+                
+                Flexible(child: Text("Inserisci un nuovo med", style: TextStyle(fontSize: 28))),
+                    
+                // NOME
+                Flexible(
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Nome",
+                      border: OutlineInputBorder() 
                     ),
-
-                    // DOSAGGIO
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Dosaggio",
-                        border: OutlineInputBorder() 
-                      ),
-                      initialValue: _currentMed.dosaggio,
-                      onSaved: (value) {
-                        _currentMed.dosaggio = value!;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _currentMed.dosaggio = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return "Inserisci il dosaggio";
-                        }
-                        return null;
-                      },
-                    ),
-
-                    // NUMERO COMPRESSE
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: "20",
-                        labelText: "Numero compresse",
-                        border: OutlineInputBorder() 
-                      ),
-                      initialValue: _currentMed.compresse.toString(),
-                      onSaved: (value) {
-                        _currentMed.compresse = int.tryParse(value ?? '') ?? 0;
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _currentMed.compresse = int.tryParse(value) ?? 0;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty || int.parse(value) == 0) {
-                          return "Inserisci il numero di compresse";
-                        }
-                        return null;
-                      },
-                    ),
-
-                    // DATA PRELIEVO
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Data prelievo",
-                        border: OutlineInputBorder() 
-                      ),
-                      
-                      controller: TextEditingController(text: _currentMed.prelievo.toLocal().toString().split(' ')[0]),
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context, 
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101)
-                        );
-                        if (pickedDate != null) {
-                          setState(() {
-                            _currentMed.prelievo = pickedDate;
-                          });
-                        }
-                      },
-                      onSaved: (value) {
-                        _currentMed.prelievo =  DateTime.parse(value as String);
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _currentMed.prelievo = DateTime.parse(value);
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return "Inserisci la data di prelievo";
-                        }
-                        return null;
+                    initialValue: _currentMed.nome,
+                    onSaved: (value) {
+                      _currentMed.nome = value!;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _currentMed.nome = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "Inserisci il nome";
                       }
+                      return null;
+                    },
+                  ),
+                ),
+                    
+                // DOSAGGIO
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Dosaggio",
+                    border: OutlineInputBorder() 
+                  ),
+                  initialValue: _currentMed.dosaggio,
+                  onSaved: (value) {
+                    _currentMed.dosaggio = value!;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      _currentMed.dosaggio = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Inserisci il dosaggio";
+                    }
+                    return null;
+                  },
+                ),
+                    
+                // NUMERO COMPRESSE
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: "20",
+                    labelText: "Numero compresse",
+                    border: OutlineInputBorder() 
+                  ),
+                  initialValue: _currentMed.compresse.toString(),
+                  onSaved: (value) {
+                    _currentMed.compresse = int.tryParse(value ?? '') ?? 0;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      _currentMed.compresse = int.tryParse(value) ?? 0;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty || int.parse(value) == 0) {
+                      return "Inserisci il numero di compresse";
+                    }
+                    return null;
+                  },
+                ),
+                    
+                // DATA PRELIEVO
+                Flexible(
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Data prelievo",
+                      border: OutlineInputBorder() 
                     ),
-
-                    const SizedBox(height: 20),
-
-                    // BOTTONI SALVA / ANNULLA
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              insertMed();
-                            }
-                          },
-                          label: Text("Salva"),
-                          icon: Icon(Icons.check) 
-                        ),
-                        const SizedBox(width: 50),
-                        ElevatedButton.icon(
-                          onPressed: () { Navigator.pop(context); },
-                          label: Text("Annulla"),
-                          icon: Icon(Icons.close),
-                        )
-                      ],
-                    )
-                  ],
+                    
+                    controller: TextEditingController(text: _currentMed.prelievo.toLocal().toString().split(' ')[0]),
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context, 
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101)
+                      );
+                      if (pickedDate != null) {
+                        setState(() {
+                          _currentMed.prelievo = pickedDate;
+                        });
+                      }
+                    },
+                    onSaved: (value) {
+                      _currentMed.prelievo =  DateTime.parse(value as String);
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _currentMed.prelievo = DateTime.parse(value);
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return "Inserisci la data di prelievo";
+                      }
+                      return null;
+                    }
+                  ),
+                ),
+                    
+                const SizedBox(height: 20),
+                    
+                // BOTTONI SALVA / ANNULLA
+                Flexible(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            insertMed();
+                          }
+                        },
+                        label: Text("Salva"),
+                        icon: Icon(Icons.check) 
+                      ),
+                      const SizedBox(width: 50),
+                      ElevatedButton.icon(
+                        onPressed: () { Navigator.pop(context); },
+                        label: Text("Annulla"),
+                        icon: Icon(Icons.close),
+                      )
+                    ],
+                  ),
                 )
-              )
-            ),
+              ],
+            )
           )
         ),
       ),

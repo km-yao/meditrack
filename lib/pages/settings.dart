@@ -59,28 +59,23 @@ class _SettingsState extends ConsumerState<Settings> {
       body: Padding(
         padding: EdgeInsetsGeometry.all(12),
         child: Center(
-          child: Expanded(
-            child: Container(
-              decoration: BoxDecoration(),
-              child: Column(
-                spacing: 8,
-                children: [
-
-                  Text("Impostazioni", style: TextStyle(fontSize: 28)),
-
-                  const SizedBox(height: 30),
-
-                  Row(
-                    children: [
-                      Text("Pulisci il database"),
-                      Expanded(child: const SizedBox()),
-                      TextButton(onPressed: _pulisciDB, child: Text("Pulisci"))
-                    ],
-                  )
-
-                ],
-              ),
-            )
+          child: Column(
+            spacing: 30,
+            children: [
+          
+              Flexible(child: Text("Impostazioni", style: TextStyle(fontSize: 28))),
+          
+              Flexible(
+                child: Row(
+                  children: [
+                    Flexible(child: Text("Pulisci il database")),
+                    Expanded(child: const SizedBox()),
+                    Flexible(child: TextButton(onPressed: _pulisciDB, child: Text("Pulisci")))
+                  ],
+                ),
+              )
+          
+            ],
           ),
         ),
       ),
