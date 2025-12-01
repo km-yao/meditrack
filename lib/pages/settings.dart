@@ -57,7 +57,7 @@ class _SettingsState extends ConsumerState<Settings> {
         leading: BackButton(color: Theme.of(context).colorScheme.onPrimary),
       ),
       body: Padding(
-        padding: EdgeInsetsGeometry.all(12),
+        padding: EdgeInsetsGeometry.all(16),
         child: Center(
           child: Column(
             spacing: 30,
@@ -66,12 +66,22 @@ class _SettingsState extends ConsumerState<Settings> {
               Flexible(child: Text("Impostazioni", style: TextStyle(fontSize: 28))),
           
               Flexible(
-                child: Row(
-                  children: [
-                    Flexible(child: Text("Pulisci il database")),
-                    Expanded(child: const SizedBox()),
-                    Flexible(child: TextButton(onPressed: _pulisciDB, child: Text("Pulisci")))
-                  ],
+                child: InkWell(
+                  onTap: _pulisciDB,
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      "Pulisci Database",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                    ),
+                  ),
                 ),
               )
           
