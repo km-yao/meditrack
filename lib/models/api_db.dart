@@ -15,7 +15,7 @@ class ApiDb {
   void _initDatabase() async {
     database = openDatabase(
       dbName,
-      version: 2,
+      version: 3,
       onCreate: (db, version) async {
         // create tables if they don't exist
         await db.execute(
@@ -23,6 +23,7 @@ class ApiDb {
             "id INTEGER primary key,"
             "nome TEXT,"
             "compresse INTEGER,"
+            "frequenza INTEGER,"
             "dosaggio TEXT,"
             "prelievo TEXT,"
             "scadenza TEXT"
@@ -35,6 +36,7 @@ class ApiDb {
             "id INTEGER primary key,"
             "nome TEXT,"
             "compresse INTEGER,"
+            "frequenza INTEGER,"
             "dosaggio TEXT,"
             "prelievo TEXT,"
             "scadenza TEXT"
@@ -54,11 +56,12 @@ class ApiDb {
         'id': id as int, 
         'nome': nome as String, 
         'compresse': compresse as int, 
+        'frequenza': frequenza as int,
         'dosaggio': dosaggio as String,
         'prelievo': prelievo as String,
         'scadenza': scadenza as String
         } in medsMap)
-      Med(id: id, nome: nome, compresse: compresse, dosaggio: dosaggio, prelievo: DateTime.parse(prelievo), scadenza: DateTime.parse(scadenza) )
+      Med(id: id, nome: nome, compresse: compresse, frequenza: frequenza, dosaggio: dosaggio, prelievo: DateTime.parse(prelievo), scadenza: DateTime.parse(scadenza) )
     ];
   }
 
@@ -77,6 +80,7 @@ class ApiDb {
       id: row['id'] as int,
       nome: row['nome'] as String,
       compresse: row['compresse'] as int,
+      frequenza: row['frequenza'] as int,
       dosaggio: row['dosaggio'] as String,
       prelievo: DateTime.parse(row['prelievo'] as String),
       scadenza: DateTime.parse(row['scadenza'] as String)

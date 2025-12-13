@@ -44,7 +44,7 @@ class _AddMedState extends ConsumerState<EditMed> {
   @override
   void initState() {
     super.initState();
-    _currentMed = Med(id: 0, nome: "", compresse: 0, dosaggio: "", prelievo: DateTime.now(), scadenza: DateTime.now());
+    _currentMed = Med(id: 0, nome: "", compresse: 0, frequenza: 1, dosaggio: "", prelievo: DateTime.now(), scadenza: DateTime.now());
   }
 
   @override
@@ -123,30 +123,68 @@ class _AddMedState extends ConsumerState<EditMed> {
                     return null;
                   },
                 ),
-                    
-                // NUMERO COMPRESSE
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: "20",
-                    labelText: "Numero compresse",
-                    border: OutlineInputBorder() 
-                  ),
-                  initialValue: _currentMed.compresse.toString(),
-                  onSaved: (value) {
-                    _currentMed.compresse = int.tryParse(value ?? '') ?? 0;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      _currentMed.compresse = int.tryParse(value) ?? 0;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty || int.parse(value) == 0) {
-                      return "Inserisci il numero di compresse";
-                    }
-                    return null;
-                  },
+                
+                // NUMERO COMPRESSE E FREQUENZA
+                Row(
+                  spacing: 9,
+                  children: [
+                    // NUMERO COMPRESSE
+                    Flexible(
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: "20",
+                          labelText: "Numero compresse",
+                          border: OutlineInputBorder() 
+                        ),
+                        initialValue: _currentMed.compresse.toString(),
+                        onSaved: (value) {
+                          _currentMed.compresse = int.tryParse(value ?? '') ?? 0;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _currentMed.compresse = int.tryParse(value) ?? 0;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty || int.parse(value) == 0) {
+                            return "Inserisci il numero di compresse";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+
+                    // FREQUENZA
+                    Flexible(
+                      child: DropdownButtonFormField<int>(
+                        decoration: InputDecoration(
+                          labelText: "Frequenza",
+                          border: OutlineInputBorder(),
+                        ),
+                        value: _currentMed.frequenza,
+                        items: const [
+                          DropdownMenuItem(value: 1, child: Text('giornalmente')),
+                          DropdownMenuItem(value: 7, child: Text('settimanalmente')),
+                          DropdownMenuItem(value: 14, child: Text('due settimane')),
+                          DropdownMenuItem(value: 30, child: Text('mensilmente')),
+                        ],
+                        onChanged: (val) {
+                          if (val == null) return;
+                          setState(() {
+                            _currentMed.frequenza = val;
+                          });
+                        },
+                        onSaved: (val) {
+                          _currentMed.frequenza = val ?? 1;
+                        },
+                        validator: (val) {
+                          if (val == null || val == 0) return "Seleziona una frequenza";
+                          return null;
+                        },
+                      ),
+                    ),
+                  ]
                 ),
                     
                 // DATA PRELIEVO
@@ -162,7 +200,7 @@ class _AddMedState extends ConsumerState<EditMed> {
                       DateTime? pickedDate = await showDatePicker(
                         context: context, 
                         initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
+                        firstDate: DateTime(2020),
                         lastDate: DateTime(2101)
                       );
                       if (pickedDate != null) {

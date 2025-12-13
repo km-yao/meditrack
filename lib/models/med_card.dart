@@ -20,6 +20,19 @@ class MedCard extends StatelessWidget {
     }
   }
 
+  String getFrequencyText() {
+    switch (med.frequenza) {
+      case 7:
+        return "Settimanalmente";
+      case 14:
+        return "Ogni 2 settimane";
+      case 30:
+        return "Mensilmente";
+      default:
+        return "Giornalmente";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -39,7 +52,7 @@ class MedCard extends StatelessWidget {
                 spacing: 4,
                 children: [
                   Text(med.nome, style: TextStyle(fontSize: 26)),
-                  Text("${med.compresse} compresse"),
+                  Text("${med.compresse} compresse | ${getFrequencyText()}"),
                   Text(med.dosaggio, textAlign: TextAlign.start),
                 ],
               ),
