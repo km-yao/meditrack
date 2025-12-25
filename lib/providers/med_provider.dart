@@ -48,6 +48,19 @@ class MedNotifier extends StateNotifier<MedResponse> {
     }
   }
 
+  Future<void> delete(int id) async {
+    try {
+      state = state.copyWith(isLoadingArg: true);
+      await service.delete(id);
+      List<Med> updatedList = state.list.where((med) => med.id != id).toList();
+      state = state.copyWith(listArg: updatedList);
+    } catch (e) {
+      state = state.copyWith(errorMsgArg: "Errore cancellazione med: $e\n");
+    } finally {
+      state = state.copyWith(isLoadingArg: false);
+    }
+  }
+
   Future<void> update(Med med) async {
     try {
       state = state.copyWith(isLoadingArg: true);

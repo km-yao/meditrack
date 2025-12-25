@@ -22,6 +22,39 @@ class _HomepageState extends ConsumerState<Homepage> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 
+
+  void deleteMed(Med med) async {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text("Elimina"),
+        content: Text("Elimina il med ${med.nome}?"),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text("Annulla")),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+
+              try {
+
+                // Elimina dal database
+                await ref.read(medProvider.notifier).delete(med.id);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Med eliminato"))
+                );
+
+              } catch (e) {
+                throw Exception("HOMEPAGE : Errore eliminazione med : $e");
+              }
+
+            }, 
+            child: Text("Conferma")
+          ),
+        ],
+      );
+    });
+  }
+
   void updateMed(Med med) async {
     showDialog(context: context, builder: (context) {
       return AlertDialog(
@@ -55,6 +88,35 @@ class _HomepageState extends ConsumerState<Homepage> {
         ],
       );
     });
+  }
+
+  void medOptions(Med med) {
+    showModalBottomSheet(
+      context: context, 
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.update),
+              title: Text("Aggiorna"),
+              onTap: () {
+                Navigator.pop(context);
+                updateMed(med);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.delete),
+              title: Text("Elimina"),
+              onTap: () {
+                Navigator.pop(context);
+                deleteMed(med);
+              },
+            ),
+          ],
+        );
+      }
+    );
   }
 
   @override
@@ -114,7 +176,7 @@ class _HomepageState extends ConsumerState<Homepage> {
                   itemCount: medResponse.list.length,
                   itemBuilder: (context, index) {
                     Med currentMed = medResponse.list[index];
-                    return MedCard(med: currentMed, onLongPress: updateMed,);
+                    return MedCard(med: currentMed, onLongPress: medOptions,);
                   },
                 ),
               ),

@@ -20,7 +20,7 @@ class Med {
 
   Med.med({
     this.id = 0,
-    this.frequenza = 1, // 1, 7, 14, 30
+    required this.frequenza, // 1, 7, 14, 30
     required this.nome,
     required this.compresse,
     required this.dosaggio,
@@ -64,6 +64,6 @@ class Med {
   }
 
   void updateScadenza() {
-    scadenza = prelievo.add(Duration(days: compresse));
+    scadenza = prelievo.add(Duration(days: compresse * frequenza));
   }
 }

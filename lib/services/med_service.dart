@@ -35,6 +35,14 @@ class MedService {
     }
   }
 
+  Future<void> delete(int id) async {
+    try {
+      await ApiDb().deleteMed(id);
+    } catch (e) {
+      throw Exception("MEDSERVICE.delete : $e");
+    }
+  }
+
   Future<void> update(Med med) async {
     try {
       await ApiDb().updateMed(med);

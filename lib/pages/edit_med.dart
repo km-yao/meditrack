@@ -19,7 +19,8 @@ class _AddMedState extends ConsumerState<EditMed> {
   Future<void> insertMed() async {
     try {
       // Aggoirna la data di scadenza in base alla data di prelievo e al numero di compresse
-      _currentMed.scadenza = _currentMed.prelievo.add(Duration(days: _currentMed.compresse));
+      //_currentMed.scadenza = _currentMed.prelievo.add(Duration(days: _currentMed.compresse));
+      _currentMed.updateScadenza();
 
       await ref.read(medProvider.notifier).insert(_currentMed);
       MedResponse result = ref.read(medProvider);

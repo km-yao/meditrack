@@ -15,7 +15,7 @@ class ApiDb {
   void _initDatabase() async {
     database = openDatabase(
       dbName,
-      version: 3,
+      version: 5,
       onCreate: (db, version) async {
         // create tables if they don't exist
         await db.execute(
@@ -31,6 +31,9 @@ class ApiDb {
         );
       },
       onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < newVersion) {
+          await db.execute("DROP TABLE meds;");
+        }
         await db.execute(
           "CREATE TABLE IF NOT EXISTS meds(" 
             "id INTEGER primary key,"
